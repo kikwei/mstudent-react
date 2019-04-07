@@ -1,67 +1,77 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-class Register extends Component {
+class ChangePassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      success: [],
-      errors: []
+      errors: [],
+      success: []
     };
   }
-  handleRegister = event => {
+
+  handleChangePasword = event => {
     event.preventDefault();
 
-    const authObj = JSON.parse(localStorage.Staff);
-    const creator = authObj.email;
-    const token = authObj.token;
+    const staffAuth =
+      localStorage.Staff !== undefined ? JSON.parse(localStorage.Staff) : false;
+    const staffStudent =
+      localStorage.Student !== undefined
+        ? JSON.parse(localStorage.Student)
+        : false;
 
-    const studentData = {
-      fullName: event.target.fullName.value,
-      dob: event.target.dob.value,
-      school: event.target.school.value,
-      adm: event.target.adm.value,
-      creator,
-      token
-    };
+    const authObj = staffAuth ? staffAuth : staffStudent;
+    if (event.target.password.value === event.target.confirm_password.value) {
+      const passwordData = {
+        old_password: event.target.old_password.value,
+        password: event.target.password.value,
+        token: authObj.token
+      };
 
-    const headers = {
-      "Content-Type": "application/json"
-    };
+      console.log(passwordData);
 
-    console.log(headers);
-    axios
-      .post(
-        "http://52.71.181.211/api/students",
-        JSON.stringify(studentData),
-        headers
-      )
-      .then(response => {
-        const errors = [];
-        this.setState({ errors });
-        const success = [...this.state.success];
-        success.push({ success: "Student registered successfully." });
-        this.setState({ success });
-      })
-      .catch(error => {
-        const success = [];
-        this.setState({ success });
-        const errors = [...this.state.errors];
-        errors.push(error.response.data);
-        this.setState({ errors });
-      });
+      let headers = {
+        "Content-Type": "application/json"
+      };
+
+      axios
+        .post(
+          "http://52.71.181.211/api/change_password",
+          JSON.stringify(passwordData),
+          headers
+        )
+        .then(response => {
+          this.setState({ errors: [] });
+
+          const success = [...this.state.success];
+          console.log(response.data);
+          success.push({ success: "Password changed successfully" });
+          this.setState({ success });
+        })
+        .catch(error => {
+          console.log(error.response);
+          const errors = [...this.state.errors];
+          errors.push(error.response.data);
+          this.setState({ errors });
+        });
+    } else {
+      const errors = [...this.state.errors];
+      errors.push({ error: "Passwords does not match" });
+      this.setState({ errors });
+    }
   };
+
   render() {
     return (
       <div className="container py-5">
         <div className="row">
           <div className="col-md-12">
-            <h2 className="text-center text-white mb-4">Register student.</h2>
+            <h2 className="text-center text-white mb-4">Change Password.</h2>
             <div className="row">
               <div className="col-md-6 mx-auto">
                 <div className="card rounded-0">
                   <div className="card-header">
-                    <h3 className="mb-0">Register student</h3>
+                    <h3 className="mb-0">Change Password</h3>
                   </div>
                   <div className="card-body">
                     {this.state.errors.length > 0 ? (
@@ -87,14 +97,14 @@ class Register extends Component {
                     ) : (
                       false
                     )}
-                    <form className="form" onSubmit={this.handleRegister}>
+                    <form className="form" onSubmit={this.handleChangePasword}>
                       <div className="form-group">
-                        <label>Fullname</label>
+                        <label>Old password</label>
                         <input
-                          type="text"
+                          type="password"
                           className="form-control form-control-lg rounded-0"
-                          name="fullname"
-                          id="fullName"
+                          name="old_password"
+                          placeholder="Old password"
                           required=""
                         />
                         <div className="invalid-feedback">
@@ -103,53 +113,38 @@ class Register extends Component {
                       </div>
 
                       <div className="form-group">
-                        <label>School</label>
+                        <label>New Password</label>
                         <input
-                          type="text"
+                          type="password"
                           className="form-control form-control-lg rounded-0"
-                          name="school"
-                          id="school"
+                          placeholder="New password"
+                          name="password"
                           required=""
                         />
                         <div className="invalid-feedback">
-                          Oops, you missed this one.
+                          Enter your password too!
                         </div>
                       </div>
 
                       <div className="form-group">
-                        <label>Date of Birth</label>
+                        <label>Confirm Password</label>
                         <input
-                          type="date"
+                          type="password"
                           className="form-control form-control-lg rounded-0"
-                          name="dob"
-                          id="dob"
+                          placeholder="Confirm password"
+                          name="confirm_password"
                           required=""
                         />
                         <div className="invalid-feedback">
-                          Oops, you missed this one.
+                          Enter your password too!
                         </div>
                       </div>
-
-                      <div className="form-group">
-                        <label>Admission number</label>
-                        <input
-                          type="text"
-                          className="form-control form-control-lg rounded-0"
-                          name="adm"
-                          id="adm"
-                          required=""
-                        />
-                        <div className="invalid-feedback">
-                          Enter your adm too!
-                        </div>
-                      </div>
-                      <div />
                       <button
                         type="submit"
                         className="btn btn-success btn-lg float-right"
                         id="btnLogin"
                       >
-                        Register student
+                        submit
                       </button>
                     </form>
                   </div>
@@ -163,4 +158,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default ChangePassword;

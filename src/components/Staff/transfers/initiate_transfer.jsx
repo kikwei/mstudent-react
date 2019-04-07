@@ -1,23 +1,15 @@
 import React, { Component } from "react";
-import Select from "react-select";
 import axios from "axios";
 
-const options = [
-  { value: "english", label: "English" },
-  { value: "kiswahili", label: "Kiswahil" },
-  { value: "Maths", label: "Mathematics" },
-  { value: "chemistry", label: "Chemistry" },
-  { value: "biology", label: "Biology" }
-];
-
-class MarksEntry extends Component {
+class InitiateTransfer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       success: [],
       errors: [],
       subjects: null,
-      selectedSubjects: []
+      selectedSubjects: [],
+      selectedPeriod: null
     };
   }
 
@@ -34,45 +26,38 @@ class MarksEntry extends Component {
     });
   };
 
-  handleRegister = event => {
+  handleTransfer = event => {
     event.preventDefault();
 
     const authObj = JSON.parse(localStorage.Staff);
-    const creator = authObj.user;
+    const creator = authObj.email;
     const token = authObj.token;
 
-    let scores = [];
-
-    Array.from(event.target.score).forEach(input => scores.push(input.value));
-
-    const marks = this.state.selectedSubjects.map((subject, key) => ({
-      subject: subject,
-      score: scores[key]
-    }));
-
-    const marksData = {
+    const transferData = {
       student: event.target.student.value,
-      marks,
-      creator,
+      comment: event.target.comment.value,
+      transfer_to: event.target.transfer_to.value,
+      approved_by: creator,
       token
     };
+
+    console.log(transferData);
 
     const headers = {
       "Content-Type": "application/json"
     };
 
-    console.log(headers);
     axios
       .post(
-        "http://127.0.0.1:9000/api/marks",
-        JSON.stringify(marksData),
+        "http://52.71.181.211/api/transfers",
+        JSON.stringify(transferData),
         headers
       )
       .then(response => {
         const errors = [];
         this.setState({ errors });
         const success = [...this.state.success];
-        success.push({ success: "Marks entered successfully." });
+        success.push({ success: "Transfer initiated successfully." });
         this.setState({ success });
       })
       .catch(error => {
@@ -84,17 +69,16 @@ class MarksEntry extends Component {
       });
   };
   render() {
-    const { subjects } = this.state;
     return (
       <div className="container py-5">
         <div className="row">
           <div className="col-md-12">
-            <h2 className="text-center text-white mb-4">Marks Entry.</h2>
+            <h2 className="text-center text-white mb-4">Transfer.</h2>
             <div className="row">
               <div className="col-md-6 mx-auto">
                 <div className="card rounded-0">
                   <div className="card-header">
-                    <h3 className="mb-0">Marks Entry</h3>
+                    <h3 className="mb-0">Transfer</h3>
                   </div>
                   <div className="card-body">
                     {this.state.errors.length > 0 ? (
@@ -120,7 +104,7 @@ class MarksEntry extends Component {
                     ) : (
                       false
                     )}
-                    <form className="form" onSubmit={this.handleRegister}>
+                    <form className="form" onSubmit={this.handleTransfer}>
                       <div className="form-group">
                         <label>Student</label>
                         <input
@@ -128,45 +112,36 @@ class MarksEntry extends Component {
                           className="form-control form-control-lg rounded-0"
                           name="student"
                           id="student"
-                          required=""
+                          required
                         />
-                        <div className="invalid-feedback">
-                          Oops, you missed this one.
-                        </div>
                       </div>
 
                       <div className="form-group">
-                        <label>Select Courses</label>
-                        <Select
-                          value={subjects}
-                          onChange={this.handleSelect}
-                          placeholder="Select courses"
-                          options={options}
-                          isMulti
-                          isSearchables
+                        <label>transfer to</label>
+                        <input
+                          type="text"
+                          className="form-control form-control-lg rounded-0"
+                          name="transfer_to"
+                          id="school"
+                          required
                         />
                       </div>
 
-                      {this.state.selectedSubjects.length > 0
-                        ? this.state.selectedSubjects.map((subject, key) => (
-                            <div className="form-group" key={key}>
-                              <label> {subject} marks</label>
-                              <input
-                                type="number"
-                                className="form-control form-control-lg rounded-0"
-                                name="score"
-                                required=""
-                              />
-                            </div>
-                          ))
-                        : false}
-
-                      <div />
+                      <div className="form-group">
+                        <label>Comment</label>
+                        <textarea
+                          type="text"
+                          className="form-control form-control-lg rounded-0"
+                          name="comment"
+                          id="comment"
+                          required
+                        />
+                      </div>
                       <button
                         type="submit"
                         className="btn btn-info btn-lg float-right"
                       >
-                        Submit Marks
+                        Initiate transfer
                       </button>
                     </form>
                   </div>
@@ -180,4 +155,4 @@ class MarksEntry extends Component {
   }
 }
 
-export default MarksEntry;
+export default InitiateTransfer;

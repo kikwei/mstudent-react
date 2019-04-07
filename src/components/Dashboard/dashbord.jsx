@@ -40,6 +40,14 @@ class Dashboard extends Component {
 
             {localStorage.Staff !== undefined ? (
               <li>
+                <Link to="/dashboard/initiate_transfer">Initiate Transfer</Link>
+              </li>
+            ) : (
+              false
+            )}
+
+            {localStorage.Staff !== undefined ? (
+              <li>
                 <Link to="/dashboard/transfers">Transfers</Link>
               </li>
             ) : (
@@ -61,6 +69,9 @@ class Dashboard extends Component {
             ) : (
               false
             )}
+            <li>
+              <Link to="/dashboard/change_password">Change password</Link>
+            </li>
             <li>
               <Link to="" onClick={event => this.logOut(event)}>
                 Log out
