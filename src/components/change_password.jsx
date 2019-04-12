@@ -36,7 +36,7 @@ class ChangePassword extends Component {
 
       axios
         .post(
-          "http://52.71.181.211/api/change_password",
+          "http://127.0.01:9000/api/change_password",
           JSON.stringify(passwordData),
           headers
         )

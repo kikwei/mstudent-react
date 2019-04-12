@@ -48,6 +48,16 @@ class Dashboard extends Component {
 
             {localStorage.Staff !== undefined ? (
               <li>
+                <Link to="/dashboard/indiscipline_case">
+                  Record Indiscipline
+                </Link>
+              </li>
+            ) : (
+              false
+            )}
+
+            {localStorage.Staff !== undefined ? (
+              <li>
                 <Link to="/dashboard/transfers">Transfers</Link>
               </li>
             ) : (
@@ -69,6 +79,23 @@ class Dashboard extends Component {
             ) : (
               false
             )}
+
+            {localStorage.Student !== undefined ? (
+              <li>
+                <Link to="/dashboard/student_case">Indiscipline Cases</Link>
+              </li>
+            ) : (
+              false
+            )}
+
+            {localStorage.Staff !== undefined ? (
+              <li>
+                <Link to="/dashboard/details">Student details</Link>
+              </li>
+            ) : (
+              false
+            )}
+
             <li>
               <Link to="/dashboard/change_password">Change password</Link>
             </li>

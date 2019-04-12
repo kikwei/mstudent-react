@@ -1,43 +1,27 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-class InitiateTransfer extends Component {
+class Indisciplines extends Component {
   constructor(props) {
     super(props);
     this.state = {
       success: [],
-      errors: [],
-      subjects: null,
-      selectedSubjects: [],
-      selectedPeriod: null
+      errors: []
     };
   }
 
-  handleSelect = subjects => {
-    this.setState({ subjects });
-
-    setTimeout(() => {
-      let selectedSubjects = [];
-      this.state.subjects.forEach(course => {
-        selectedSubjects.push(course.label);
-      });
-
-      this.setState({ selectedSubjects });
-    });
-  };
-
-  handleTransfer = event => {
+  handleIndiscipline = event => {
     event.preventDefault();
 
     const authObj = JSON.parse(localStorage.Staff);
     const creator = authObj.email;
     const token = authObj.token;
 
-    const transferData = {
+    const indisciplineData = {
       student: event.target.student.value,
       comment: event.target.comment.value,
-      transfer_to: event.target.transfer_to.value,
-      approved_by: creator,
+      reason: event.target.reason.value,
+      official: creator,
       token
     };
 
@@ -47,15 +31,15 @@ class InitiateTransfer extends Component {
 
     axios
       .post(
-        "http://127.0.01:9000/api/transfers",
-        JSON.stringify(transferData),
+        "http://127.0.01:9000/api/indiscipline",
+        JSON.stringify(indisciplineData),
         headers
       )
       .then(response => {
         const errors = [];
         this.setState({ errors });
         const success = [...this.state.success];
-        success.push({ success: "Transfer initiated successfully." });
+        success.push({ success: "Indiscipline case recorded successfully." });
         this.setState({ success });
       })
       .catch(error => {
@@ -71,12 +55,12 @@ class InitiateTransfer extends Component {
       <div className="container py-5">
         <div className="row">
           <div className="col-md-12">
-            <h2 className="text-center text-white mb-4">Transfer.</h2>
+            <h2 className="text-center text-white mb-4">Indiscipline case.</h2>
             <div className="row">
               <div className="col-md-6 mx-auto">
                 <div className="card rounded-0">
                   <div className="card-header">
-                    <h3 className="mb-0">Transfer</h3>
+                    <h3 className="mb-0">Indiscipline case</h3>
                   </div>
                   <div className="card-body">
                     {this.state.errors.length > 0 ? (
@@ -102,7 +86,7 @@ class InitiateTransfer extends Component {
                     ) : (
                       false
                     )}
-                    <form className="form" onSubmit={this.handleTransfer}>
+                    <form className="form" onSubmit={this.handleIndiscipline}>
                       <div className="form-group">
                         <label>Student</label>
                         <input
@@ -115,12 +99,11 @@ class InitiateTransfer extends Component {
                       </div>
 
                       <div className="form-group">
-                        <label>transfer to</label>
+                        <label>Reason</label>
                         <input
                           type="text"
                           className="form-control form-control-lg rounded-0"
-                          name="transfer_to"
-                          id="school"
+                          name="reason"
                           required
                         />
                       </div>
@@ -139,7 +122,7 @@ class InitiateTransfer extends Component {
                         type="submit"
                         className="btn btn-info btn-lg float-right"
                       >
-                        Initiate transfer
+                        Record case
                       </button>
                     </form>
                   </div>
@@ -153,4 +136,4 @@ class InitiateTransfer extends Component {
   }
 }
 
-export default InitiateTransfer;
+export default Indisciplines;

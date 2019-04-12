@@ -9,6 +9,9 @@ import Entermarks from "./components/Staff/marks/marks_entry";
 import Marks from "./components/Student/marks/App";
 import Transfers from "./components/Staff/transfers/App";
 import InitiateTransfer from "./components/Staff/transfers/initiate_transfer";
+import Indiscipline from "./components/Staff/indiscipline/indiscipline";
+import StudentIndisci from "./components/Student/discipline/App";
+import StudentDet from "./components/Staff/studentDetails/App";
 import Landing from "./components/landing/landing";
 import Dashboard from "./components/Dashboard/dashbord";
 import ChangePassword from "./components/change_password";
@@ -22,7 +25,7 @@ class App extends Component {
         <div className="App">
           <Navbar />
 
-          <Route exact path="/" component={Landing} />
+          <Route exact path="/" component={Login} />
           <div className="container">
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/dashboard/register" component={Register} />
@@ -37,6 +40,13 @@ class App extends Component {
               path="/dashboard/initiate_transfer"
               component={InitiateTransfer}
             />
+            <Route
+              path="/dashboard/indiscipline_case"
+              component={Indiscipline}
+            />
+
+            <Route path="/dashboard/details" component={StudentDet} />
+            <Route path="/dashboard/student_case" component={StudentIndisci} />
             <Route
               path="/dashboard/change_password"
               component={ChangePassword}

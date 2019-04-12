@@ -9,13 +9,15 @@ class Marks extends Component {
         <div className="row m-2">
           <div className="col-md-4.5 offset-md-2">
             <div>
-              <table className="table table-bordered table-responsive">
-                <tbody>
+              <table className="table table-dark">
+                <thead>
                   <tr>
-                    <th className="text-centre">Subject</th>
-                    <th className="text-centre">Marks</th>
-                    <th className="text-centre">Period</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Marks</th>
+                    <th scope="col">Period</th>
                   </tr>
+                </thead>
+                <tbody>
                   {this.props.marks.marks.map((mark, key) => (
                     <Mark
                       mark={mark}

@@ -22,7 +22,7 @@ class Transfrs extends Component {
 
     axios
       .get(
-        "http://52.71.181.211/api/transfers?school=" +
+        "http://127.0.01:9000/api/transfers?school=" +
           authObj.school +
           "&token=" +
           authObj.token,

@@ -906,4 +906,8 @@ span.check-w3 {
     padding: 0.5em 2.5em;
   }
 }
-/*--//responsive--*/
+
+.header {
+  line-height: 50px;
+  letter-spacing: 1px;
+}

@@ -76,7 +76,7 @@ class MarksEntry extends Component {
     console.log(headers);
     axios
       .post(
-        "http://52.71.181.211/api/marks",
+        "http://127.0.01:9000/api/marks",
         JSON.stringify(marksData),
         headers
       )

@@ -31,7 +31,7 @@ class App extends Component {
 
     axios
       .get(
-        "http://52.71.181.211/api/marks?student=" +
+        "http://localhost:9000/api/marks?student=" +
           authObj.user +
           "&token=" +
           authObj.token +
@@ -53,16 +53,6 @@ class App extends Component {
         errors.push(error.response.data);
         this.setState({ errors });
       });
-  };
-
-  handleRegister = event => {
-    event.preventDefault();
-    const authObj = JSON.parse(localStorage.Student);
-
-    let selectedCourses = [];
-    this.state.selectedOptions.forEach(course => {
-      selectedCourses.push(course.label);
-    });
   };
 
   render() {
@@ -104,7 +94,7 @@ class App extends Component {
                       ) : (
                         false
                       )}
-                      <form onSubmit={this.handleRegister}>
+                      <form>
                         <div className="form-group">
                           <label>Select period</label>
                           <Select
